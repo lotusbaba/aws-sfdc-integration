@@ -75,6 +75,7 @@ export const handler = async (event, context, callback) => {
     }
 
     // Warming up
+    let oauth = await getConnection();
 
     let MyOpenCases_id;
     let result_orig;
@@ -92,8 +93,7 @@ export const handler = async (event, context, callback) => {
             MyOpenCases_id = result_orig.listviews[index].id
         }
     }
-
-    let oauth = await getConnection();
+    
     const query = `select Id, Name from Account`;
     let sf_auth_url =  oauth["sf_auth_url"]+'query?q='+query;
     let sf_auth_url_2 =  oauth["sf_auth_url"]+'sobjects/Case/listviews/'+ MyOpenCases_id +'/results';
@@ -166,3 +166,5 @@ export const handler = async (event, context, callback) => {
         return callback(null, response);
 
 };
+            
+
