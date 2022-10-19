@@ -75,10 +75,28 @@ export const handler = async (event, context, callback) => {
     }
 
     // Warming up
+
+    let MyOpenCases_id;
+    let result_orig;
+    let sf_auth_url_orig =  oauth["sf_auth_url"]+'sobjects/Case/listviews';
+    result_orig = await fetch(sf_auth_url_orig, { method : 'GET', headers : {...oauth.sf_auth} })  
+        .then(res => res.json())
+        .then(body=>{
+            return body
+        }).catch(err=>{
+            console.log(err)
+        });
+    
+    for (const index in result_orig.listviews) {        
+        if (result_orig.listviews[index].developerName === 'MyOpenCases') {
+            MyOpenCases_id = result_orig.listviews[index].id
+        }
+    }
+
     let oauth = await getConnection();
     const query = `select Id, Name from Account`;
     let sf_auth_url =  oauth["sf_auth_url"]+'query?q='+query;
-    let sf_auth_url_2 =  oauth["sf_auth_url"]+'sobjects/Case/listviews/00B4w00000BQU8xEAH/results';
+    let sf_auth_url_2 =  oauth["sf_auth_url"]+'sobjects/Case/listviews/'+ MyOpenCases_id +'/results';
     let result;
     result = await fetch(sf_auth_url_2, { method : 'GET', headers : {...oauth.sf_auth} })
         .then(res => res.json())
@@ -148,5 +166,3 @@ export const handler = async (event, context, callback) => {
         return callback(null, response);
 
 };
-            
-
