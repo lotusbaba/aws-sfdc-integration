@@ -12,13 +12,13 @@ export const handler = async (event, context, callback) => {
   // Read options from the event parameter.
   console.log("Reading options from event:\n", util.inspect(event, {depth: 5}));
   const srcBucket = "your-bucket-name";
-  // Object key may have spaces or unicode non-ASCII characters.
-    //   const srcKey    = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
+  // If Object key has spaces or unicode non-ASCII characters.
+   //   const srcKey    = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
     const dstBucket = "your-bucket-name";
     const dstKey    = "your-object-name";
 
 
-    // Upload the thumbnail image to the destination bucket
+    // Youur S3 settings
     try {
         const destparams = {
             Bucket: "your-bucket-name",
@@ -32,9 +32,6 @@ export const handler = async (event, context, callback) => {
         console.log(error);
         return;
     }
-
-    console.log('Successfully created and uploaded to ' + dstBucket + '/' + dstKey);
-    // return ('Successfully created and uploaded to ' + dstBucket + '/' + dstKey);
     
     // import getConnection from './sfdc_oauth.js';
     const client_id = 'SFDC Connected App Consumer Key'
@@ -109,7 +106,6 @@ export const handler = async (event, context, callback) => {
     // Meat of where everything happens
     var myObj = [];
     for (const record_index in result.records) {
-        console.log("Record number: " + record_index)
 
         for (const column_index in result.records[record_index].columns) {
             
